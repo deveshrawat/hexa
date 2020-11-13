@@ -255,7 +255,6 @@ const AccountDetailsContainerScreen: React.FC<Props> = ( { navigation } ) => {
           onSettingsPressed={navigateToAccountSettings}
         />
 
-
         <View
           style={{
             paddingVertical: 20,
@@ -269,7 +268,6 @@ const AccountDetailsContainerScreen: React.FC<Props> = ( { navigation } ) => {
             }
             onViewMorePressed={navigateToTransactionsList}
           />
-
         </View>
 
         {primarySubAccount.kind === SubAccountKind.DONATION_ACCOUNT && (

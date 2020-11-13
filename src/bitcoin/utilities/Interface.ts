@@ -387,3 +387,8 @@ export interface EncryptedImage {
   ASYNC_DATA?: string;
   STATE_DATA?: string;
 }
+
+export enum ScannedAddressKind {
+  ADDRESS = 'address',
+  PAYMENT_URI = 'paymentURI',
+}

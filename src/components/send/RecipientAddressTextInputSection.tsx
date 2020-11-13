@@ -4,33 +4,33 @@ import { Input } from 'react-native-elements';
 import FormStyles from '../../common/Styles/FormStyles';
 import useAccountsState from '../../utils/hooks/state-selectors/accounts/UseAccountsState';
 import { TEST_ACCOUNT } from '../../common/constants/serviceTypes';
-import { widthPercentageToDP } from 'react-native-responsive-screen';
+import SubAccountKind from '../../common/data/enums/SubAccountKind';
+import useWalletServiceForSubAccountKind from '../../utils/hooks/state-selectors/accounts/UseWalletServiceForSubAccountKind';
 
 const SAMPLE_ADDRESS = '2N1TSArdd2pt9RoqE3LXY55ixpRE9e5aot8';
 
 export type Props = {
   placeholder: string;
   containerStyle?: Record<string, unknown>;
-  accountKind: string;
+  subAccountKind: SubAccountKind;
   onAddressSubmitted: (address: string) => void;
 };
 
 const RecipientAddressTextInputSection: React.FC<Props> = ({
   placeholder = 'Enter Address Manually',
   containerStyle = {},
-  accountKind,
+  subAccountKind,
   onAddressSubmitted,
 }: Props) => {
   const [recipientAddress, setRecipientAddress] = useState('');
   const [isAddressInvalid, setIsAddressInvalid] = useState(false);
 
   const accountsState = useAccountsState();
+  const walletService = useWalletServiceForSubAccountKind(subAccountKind);
 
   const walletInstance = useMemo(() => {
-    const walletService = accountsState[accountKind].service;
-
     return walletService.hdWallet || walletService.secureHDWallet;
-  }, [accountKind, accountsState]);
+  }, [walletService]);
 
 
   // TODO: Every text change shouldn't be treated as a "submit".
@@ -68,7 +68,7 @@ const RecipientAddressTextInputSection: React.FC<Props> = ({
         numberOfLines={1}
       />
 
-      {accountKind == TEST_ACCOUNT && (
+      {subAccountKind == SubAccountKind.TEST && (
         <TouchableOpacity
           onPress={() => {
             handleTextChange(SAMPLE_ADDRESS);

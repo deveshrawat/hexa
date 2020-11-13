@@ -1,16 +1,15 @@
-import * as bip39 from 'bip39';
-import { Network, TransactionBuilder } from 'bitcoinjs-lib';
-import config from '../../HexaConfig';
-import { ErrMap } from '../ErrMap';
-import HDSegwitWallet from './HDSegwitWallet';
+import * as bip39 from 'bip39'
+import { Network } from 'bitcoinjs-lib'
+import config from '../../HexaConfig'
+import { ErrMap } from '../ErrMap'
+import HDSegwitWallet from './HDSegwitWallet'
 import {
   Transactions,
-  INotification,
   DerivativeAccounts,
   TransactionDetails,
   TransactionPrerequisite,
-  DerivativeAccountTypes,
-} from '../Interface';
+  ScannedAddressKind,
+} from '../Interface'
 
 export default class BaseAccount {
   public hdWallet: HDSegwitWallet;
@@ -42,9 +41,9 @@ export default class BaseAccount {
     },
     network?: Network,
   ) {
-    if (mnemonic) {
-      if (!bip39.validateMnemonic(mnemonic)) {
-        throw new Error('Invalid Mnemonic');
+    if ( mnemonic ) {
+      if ( !bip39.validateMnemonic( mnemonic ) ) {
+        throw new Error( 'Invalid Mnemonic' )
       }
     }
     this.hdWallet = new HDSegwitWallet(
@@ -53,7 +52,7 @@ export default class BaseAccount {
       dPathPurpose,
       stateVars,
       network,
-    );
+    )
   }
 
   public getMnemonic = ():
@@ -75,9 +74,11 @@ export default class BaseAccount {
       return {
         status: config.STATUS.SUCCESS,
         data: this.hdWallet.getMnemonic(),
-      };
-    } catch (err) {
-      return { status: 101, err: err.message, message: ErrMap[101] };
+      }
+    } catch ( err ) {
+      return {
+        status: 101, err: err.message, message: ErrMap[ 101 ]
+      }
     }
   };
 
@@ -100,9 +101,11 @@ export default class BaseAccount {
       return {
         status: config.STATUS.SUCCESS,
         data: this.hdWallet.getWalletId(),
-      };
-    } catch (err) {
-      return { status: 102, err: err.message, message: ErrMap[102] };
+      }
+    } catch ( err ) {
+      return {
+        status: 102, err: err.message, message: ErrMap[ 102 ]
+      }
     }
   };
 
@@ -119,7 +122,7 @@ export default class BaseAccount {
     },
   ): {
     paymentURI: string;
-  } => this.hdWallet.generatePaymentURI(address, options);
+  } => this.hdWallet.generatePaymentURI( address, options );
 
   public decodePaymentURI = (
     paymentURI: string,
@@ -130,18 +133,16 @@ export default class BaseAccount {
       label?: string;
       message?: string;
     };
-  } => this.hdWallet.decodePaymentURI(paymentURI);
+  } => this.hdWallet.decodePaymentURI( paymentURI );
 
   public addressDiff = (
     scannedStr: string,
-  ): {
-    type: string;
-  } => this.hdWallet.addressDiff(scannedStr);
+  ): { type: ScannedAddressKind | null } => this.hdWallet.addressDiff( scannedStr );
 
   public getReceivingAddress = (
     derivativeAccountType?: string,
     accountNumber?: number,
-  ) => this.hdWallet.getReceivingAddress(derivativeAccountType, accountNumber);
+  ) => this.hdWallet.getReceivingAddress( derivativeAccountType, accountNumber );
 
   public getDerivativeAccXpub = (
     accountType: string,
@@ -168,13 +169,13 @@ export default class BaseAccount {
           accountNumber,
           contactName.toLowerCase().trim(),
         ),
-      };
-    } catch (err) {
+      }
+    } catch ( err ) {
       return {
         status: 0o1,
         err: err.message,
-        message: "Failed to generate derivative account's xpub",
-      };
+        message: 'Failed to generate derivative account\'s xpub',
+      }
     }
   };
 
@@ -206,13 +207,13 @@ export default class BaseAccount {
           contactName ? contactName.toLowerCase().trim() : null,
           accountName,
         ),
-      };
-    } catch (err) {
+      }
+    } catch ( err ) {
       return {
         status: 0o1,
         err: err.message,
-        message: "Failed to generate derivative account's address",
-      };
+        message: 'Failed to generate derivative account\'s address',
+      }
     }
   };
 
@@ -262,14 +263,14 @@ export default class BaseAccount {
           accountType,
           accountNumber,
         ),
-      };
-    } catch (err) {
+      }
+    } catch ( err ) {
       return {
         status: 0o3,
         err: err.message,
         message:
-          "Failed to generate derivative account's balance and transactions",
-      };
+          'Failed to generate derivative account\'s balance and transactions',
+      }
     }
   };
 
@@ -297,13 +298,13 @@ export default class BaseAccount {
         data: await this.hdWallet.syncDerivativeAccountsBalanceTxs(
           accountTypes,
         ),
-      };
-    } catch (err) {
+      }
+    } catch ( err ) {
       return {
         status: 0o3,
         err: err.message,
-        message: "Failed to sync derivative account's balance and transactions",
-      };
+        message: 'Failed to sync derivative account\'s balance and transactions',
+      }
     }
   };
 
@@ -314,7 +315,7 @@ export default class BaseAccount {
     | {
         status: number;
         data: {
-          synched: Boolean;
+          synched: boolean;
         };
         err?: undefined;
         message?: undefined;
@@ -329,14 +330,14 @@ export default class BaseAccount {
     try {
       return {
         status: config.STATUS.SUCCESS,
-        data: await this.hdWallet.syncViaXpubAgent(accountType, accountNumber),
-      };
-    } catch (err) {
+        data: await this.hdWallet.syncViaXpubAgent( accountType, accountNumber ),
+      }
+    } catch ( err ) {
       return {
         status: 0o3,
         err: err.message,
         message: 'Failed to sync xpub via xpub agent',
-      };
+      }
     }
   };
 
@@ -362,14 +363,14 @@ export default class BaseAccount {
     try {
       return {
         status: config.STATUS.SUCCESS,
-        data: this.hdWallet.setupDerivativeAccount(accountType, accountDetails),
-      };
-    } catch (err) {
+        data: this.hdWallet.setupDerivativeAccount( accountType, accountDetails ),
+      }
+    } catch ( err ) {
       return {
         status: 0o3,
         err: err.message,
         message: 'Failed to setup derivative acccount',
-      };
+      }
     }
   };
 
@@ -387,9 +388,9 @@ export default class BaseAccount {
     | {
         status: number;
         data: {
-          setupSuccessful: Boolean;
-          accountId: String;
-          accountNumber: Number;
+          setupSuccessful: boolean;
+          accountId: string;
+          accountNumber: number;
         };
         err?: undefined;
         message?: undefined;
@@ -411,13 +412,13 @@ export default class BaseAccount {
           configuration,
           disableAccount,
         ),
-      };
-    } catch (err) {
+      }
+    } catch ( err ) {
       return {
         status: 0o3,
         err: err.message,
         message: 'Failed to setup donation account',
-      };
+      }
     }
   };
 
@@ -440,7 +441,7 @@ export default class BaseAccount {
     | {
         status: number;
         data: {
-          updated: Boolean;
+          updated: boolean;
         };
         err?: undefined;
         message?: undefined;
@@ -459,13 +460,13 @@ export default class BaseAccount {
           accountNumber,
           preferences,
         ),
-      };
-    } catch (err) {
+      }
+    } catch ( err ) {
       return {
         status: 0o3,
         err: err.message,
         message: 'Failed to update donation account preferences',
-      };
+      }
     }
   };
 
@@ -490,19 +491,21 @@ export default class BaseAccount {
     try {
       return {
         status: config.STATUS.SUCCESS,
-        data: await this.hdWallet.deriveReceivingAddress(xpub),
-      };
-    } catch (err) {
-      return { status: 0o1, err: err.message, message: ErrMap[0o1] };
+        data: await this.hdWallet.deriveReceivingAddress( xpub ),
+      }
+    } catch ( err ) {
+      return {
+        status: 0o1, err: err.message, message: ErrMap[ 0o1 ]
+      }
     }
   };
 
-  public isValidAddress = (recipientAddress: string): Boolean =>
-    this.hdWallet.isValidAddress(recipientAddress);
+  public isValidAddress = ( recipientAddress: string ): boolean =>
+    this.hdWallet.isValidAddress( recipientAddress );
 
-  public getBalanceTransactions = async (options?: {
+  public getBalanceTransactions = async ( options?: {
     restore?;
-  }): Promise<
+  } ): Promise<
     | {
         status: number;
         data: {
@@ -541,10 +544,12 @@ export default class BaseAccount {
     try {
       return {
         status: config.STATUS.SUCCESS,
-        data: await this.hdWallet.fetchBalanceTransaction(options),
-      };
-    } catch (err) {
-      return { status: 0o3, err: err.message, message: ErrMap[0o3] };
+        data: await this.hdWallet.fetchBalanceTransaction( options ),
+      }
+    } catch ( err ) {
+      return {
+        status: 0o3, err: err.message, message: ErrMap[ 0o3 ]
+      }
     }
   };
 
@@ -567,10 +572,12 @@ export default class BaseAccount {
     try {
       return {
         status: config.STATUS.SUCCESS,
-        data: await this.hdWallet.fetchTransactionDetails(txHash),
-      };
-    } catch (err) {
-      return { status: 0o4, err: err.message, message: ErrMap[0o4] };
+        data: await this.hdWallet.fetchTransactionDetails( txHash ),
+      }
+    } catch ( err ) {
+      return {
+        status: 0o4, err: err.message, message: ErrMap[ 0o4 ]
+      }
     }
   };
 
@@ -597,9 +604,11 @@ export default class BaseAccount {
       return {
         status: config.STATUS.SUCCESS,
         data: await this.hdWallet.testnetFaucet(),
-      };
-    } catch (err) {
-      return { status: 0o5, err: err.message, message: ErrMap[0o5] };
+      }
+    } catch ( err ) {
+      return {
+        status: 0o5, err: err.message, message: ErrMap[ 0o5 ]
+      }
     }
   };
 
@@ -654,10 +663,10 @@ export default class BaseAccount {
       }
   > => {
     try {
-      recipients = recipients.map((recipient) => {
-        recipient.amount = Math.round(recipient.amount);
-        return recipient;
-      });
+      recipients = recipients.map( ( recipient ) => {
+        recipient.amount = Math.round( recipient.amount )
+        return recipient
+      } )
 
       const {
         fee,
@@ -667,39 +676,43 @@ export default class BaseAccount {
         recipients,
         averageTxFees,
         derivativeAccountDetails,
-      );
+      )
 
-      let netAmount = 0;
-      recipients.forEach((recipient) => {
-        netAmount += recipient.amount;
-      });
+      let netAmount = 0
+      recipients.forEach( ( recipient ) => {
+        netAmount += recipient.amount
+      } )
 
-      if (balance < netAmount + fee) {
+      if ( balance < netAmount + fee ) {
         return {
           status: 0o6,
-          err: `Insufficient balance`,
+          err: 'Insufficient balance',
           fee,
           netAmount,
-          message: ErrMap[0o6],
-        };
+          message: ErrMap[ 0o6 ],
+        }
       }
 
-      if (txPrerequisites) {
+      if ( txPrerequisites ) {
         return {
           status: config.STATUS.SUCCESS,
-          data: { txPrerequisites },
-        };
+          data: {
+            txPrerequisites
+          },
+        }
       } else {
         throw new Error(
           'Unable to create transaction: inputs failed at coinselect',
-        );
+        )
       }
 
       // } else {
       //   throw new Error('Recipient address is wrong');
       // }
-    } catch (err) {
-      return { status: 106, err: err.message, message: ErrMap[106] };
+    } catch ( err ) {
+      return {
+        status: 106, err: err.message, message: ErrMap[ 106 ]
+      }
     }
   };
 
@@ -725,7 +738,7 @@ export default class BaseAccount {
         data?: undefined;
       }
   > => {
-    let executed = 'tx-init';
+    let executed = 'tx-init'
     try {
       const { txb } = await this.hdWallet.createHDTransaction(
         txPrerequisites,
@@ -733,32 +746,36 @@ export default class BaseAccount {
         customTxPrerequisites,
         derivativeAccountDetails,
         nSequence,
-      );
-      executed = 'tx-creation';
+      )
+      executed = 'tx-creation'
 
-      let inputs;
-      if (txnPriority === 'custom' && customTxPrerequisites) {
-        inputs = customTxPrerequisites.inputs;
+      let inputs
+      if ( txnPriority === 'custom' && customTxPrerequisites ) {
+        inputs = customTxPrerequisites.inputs
       } else {
-        inputs = txPrerequisites[txnPriority.toLowerCase()].inputs;
+        inputs = txPrerequisites[ txnPriority.toLowerCase() ].inputs
       }
-      const signedTxb = this.hdWallet.signHDTransaction(inputs, txb);
+      const signedTxb = this.hdWallet.signHDTransaction( inputs, txb )
       // console.log('---- Transaction Signed ----');
-      executed = 'tx-signing';
+      executed = 'tx-signing'
 
-      const txHex = signedTxb.build().toHex();
+      const txHex = signedTxb.build().toHex()
       // console.log({ txHex });
-      const { txid } = await this.hdWallet.broadcastTransaction(txHex);
-      executed = 'tx-broadcast';
+      const { txid } = await this.hdWallet.broadcastTransaction( txHex )
+      executed = 'tx-broadcast'
       // console.log('---- Transaction Broadcasted ----');
       // console.log({ txid });
-      return { status: config.STATUS.SUCCESS, data: { txid } };
-    } catch (err) {
+      return {
+        status: config.STATUS.SUCCESS, data: {
+          txid
+        }
+      }
+    } catch ( err ) {
       return {
         status: 107,
         err: err.message + `(failed post: ${executed})`,
-        message: ErrMap[107],
-      };
+        message: ErrMap[ 107 ],
+      }
     }
   };
 }

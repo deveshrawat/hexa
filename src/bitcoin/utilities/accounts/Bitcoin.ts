@@ -6,7 +6,7 @@ import bip65 from 'bip65';
 import Client from 'bitcoin-core';
 import * as bitcoinJS from 'bitcoinjs-lib';
 import config from '../../HexaConfig';
-import { Transactions } from '../Interface';
+import { Transactions, ScannedAddressKind } from '../Interface';
 import {
   SUB_PRIMARY_ACCOUNT,
   TRUSTED_CONTACTS,
@@ -655,15 +655,17 @@ export default class Bitcoin {
 
   public addressDiff = (
     scannedStr: string,
-  ): {
-    type: string;
-  } => {
+  ): { type: ScannedAddressKind | null } => {
     if (this.isPaymentURI(scannedStr)) {
       const { address } = this.decodePaymentURI(scannedStr);
-      if (this.isValidAddress(address)) return { type: 'paymentURI' };
+
+      if (this.isValidAddress(address)) {
+        return { type: ScannedAddressKind.PAYMENT_URI };
+      }
     } else if (this.isValidAddress(scannedStr)) {
-      return { type: 'address' };
+      return { type: ScannedAddressKind.ADDRESS };
     }
+
     return { type: null };
   };
 

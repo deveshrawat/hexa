@@ -53,7 +53,7 @@ export enum SectionKind {
   SCAN_QR,
   ENTER_ADDRESS,
   SELECT_CONTACTS,
-  SELECT_SUB_ACCOUNTS,
+  SELECT_ACCOUNT_SHELLS,
 }
 
 const sectionListItemKeyExtractor = (index) => String(index);
@@ -65,7 +65,7 @@ function renderSectionHeader(
   switch (sectionKind) {
     case SectionKind.SELECT_CONTACTS:
       return <Text style={styles.listSectionHeading}>Send To Contacts</Text>;
-    case SectionKind.SELECT_SUB_ACCOUNTS:
+    case SectionKind.SELECT_ACCOUNT_SHELLS:
       if (accountKind != TEST_ACCOUNT) {
         return <Text style={styles.listSectionHeading}>Send To Accounts</Text>;
       }
@@ -81,7 +81,7 @@ interface SendPropsTypes {
   trustedContactsService: TrustedContactsService;
   accountsState: any; // TODO: Strongly type this
   trustedContactsInfo: any;
-  isTwoFASetupDone: boolean;
+  hasCompletedTFASetup: boolean;
   hasShownInitialKnowMoreSendSheet: boolean;
   setTwoFASetup: any;
   initialKnowMoreSendSheetShown: Function;
@@ -592,10 +592,10 @@ class Send extends Component<SendPropsTypes, SendStateTypes> {
   };
 
   twoFASetupMethod = async () => {
-    const { accountsState, isTwoFASetupDone } = this.props;
+    const { accountsState, hasCompletedTFASetup } = this.props;
 
     if (
-      !isTwoFASetupDone &&
+      !hasCompletedTFASetup &&
       accountsState[this.state.serviceType].service.secureHDWallet.twoFASetup
     ) {
       this.props.navigation.navigate('TwoFASetup', {
@@ -759,7 +759,7 @@ class Send extends Component<SendPropsTypes, SendStateTypes> {
                     <RecipientAddressTextInputSection
                       containerStyle={{ margin: 0, padding: 0 }}
                       placeholder="Enter Address Manually"
-                      accountKind={serviceType}
+                      subAccountKind={serviceType}
                       onAddressSubmitted={(address) => {
                         this.setState({ recipientAddress: address });
                       }}
@@ -799,7 +799,7 @@ class Send extends Component<SendPropsTypes, SendStateTypes> {
               },
             },
             {
-              kind: SectionKind.SELECT_SUB_ACCOUNTS,
+              kind: SectionKind.SELECT_ACCOUNT_SHELLS,
               data: [null],
               renderItem: () => {
                 return (
@@ -940,7 +940,7 @@ const mapStateToProps = (state) => {
       state,
       (_) => _.trustedContacts.trustedContactsInfo,
     ),
-    isTwoFASetupDone: idx(state, (_) => _.preferences.isTwoFASetupDone),
+    hasCompletedTFASetup: idx(state, (_) => _.preferences.hasCompletedTFASetup),
     hasShownInitialKnowMoreSendSheet: idx(
       state,
       (_) => _.preferences.hasShownInitialKnowMoreSendSheet,

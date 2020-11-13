@@ -64,7 +64,7 @@ import {
   addTransferDetails,
   fetchDerivativeAccBalTx,
 } from '../../store/actions/accounts';
-import { trustedChannelActions } from '../../bitcoin/utilities/Interface';
+import { trustedChannelActions, ScannedAddressKind } from '../../bitcoin/utilities/Interface';
 import moment from 'moment';
 import { withNavigationFocus } from 'react-navigation';
 import CustodianRequestModalContents from '../../components/CustodianRequestModalContents';
@@ -247,32 +247,36 @@ class Home extends PureComponent<HomePropsTypes, HomeStateTypes> {
     const { accountsState, addTransferDetails, navigation } = this.props;
 
     const network = Bitcoin.networkType(qrData);
+
     if (network) {
       const serviceType =
         network === 'MAINNET' ? REGULAR_ACCOUNT : TEST_ACCOUNT; // default service type
 
       const service = accountsState[serviceType].service;
       const { type } = service.addressDiff(qrData);
+
       if (type) {
         let item;
+
         switch (type) {
-          case 'address':
+          case ScannedAddressKind.ADDRESS:
             const recipientAddress = qrData;
-            item = {
-              id: recipientAddress,
-            };
+
+            item = { id: recipientAddress };
 
             addTransferDetails(serviceType, {
               selectedContact: item,
             });
+
             navigation.navigate('SendToContact', {
               selectedContact: item,
               serviceType,
             });
             break;
 
-          case 'paymentURI':
+          case ScannedAddressKind.PAYMENT_URI:
             let address, options, donationId;
+
             try {
               const res = service.decodePaymentURI(qrData);
               address = res.address;
@@ -288,9 +292,7 @@ class Home extends PureComponent<HomePropsTypes, HomeStateTypes> {
               return;
             }
 
-            item = {
-              id: address,
-            };
+            item = { id: address };
 
             addTransferDetails(serviceType, {
               selectedContact: item,
@@ -305,13 +307,9 @@ class Home extends PureComponent<HomePropsTypes, HomeStateTypes> {
               donationId,
             });
             break;
-
-          default:
-            Toast('Invalid QR');
-            break;
         }
-
-        return;
+      } else {
+        Toast('Invalid QR');
       }
     }
 

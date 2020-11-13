@@ -59,14 +59,11 @@ import RadioButton from '../../../components/RadioButton';
 import CustomPriorityContent from '../CustomPriorityContent';
 import CurrencyKind from '../../../common/data/enums/CurrencyKind';
 import Loader from '../../../components/loader';
-import {
-  RecipientDescribing,
-  makeSubAccountRecipientDescription,
-  makeContactRecipientDescription,
-} from '../../../common/data/models/interfaces/RecipientDescribing';
 import ConfirmedRecipientCarouselItem from '../../../components/send/ConfirmedRecipientCarouselItem';
 import { resetStackToAccountDetails } from '../../../navigation/actions/NavigationActions';
 import { SATOSHIS_IN_BTC } from '../../../common/constants/Bitcoin';
+import { RecipientDescribing } from '../../../common/data/models/interfaces/RecipientDescribing';
+import { makeAccountRecipientDescriptionFromUnknownData, makeContactRecipientDescription } from '../../../utils/sending/RecipientFactories';
 
 interface SendConfirmationStateTypes {
   selectedRecipients: unknown[];
@@ -172,6 +169,7 @@ class SendConfirmation extends Component<
       selectedRecipients: accounts[this.serviceType].transfer.details,
       loading: accounts[this.serviceType].loading,
     });
+
     this.onChangeInTransfer();
     this.setCurrencyCodeFromAsync();
   };
@@ -231,6 +229,7 @@ class SendConfirmation extends Component<
 
   onChangeInTransfer = () => {
     let { transfer } = this.state;
+
     if (transfer.details) {
       let totalAmount = 0;
       transfer.details.map((item) => {
@@ -256,8 +255,8 @@ class SendConfirmation extends Component<
       }
 
       this.sendNotifications();
-
       this.storeTrustedContactsHistory(transfer.details);
+
       if (this.state.derivativeAccountDetails) {
         if (this.state.derivativeAccountDetails.type === DONATION_ACCOUNT)
           this.props.syncViaXpubAgent(
@@ -286,12 +285,19 @@ class SendConfirmation extends Component<
       setTimeout(() => {
         (this.refs.SendSuccessBottomSheet as any).snapTo(1);
       }, 10);
+
     } else if (!transfer.txid && transfer.executed === 'ST2') {
+      // 📝 The idea seems to be that this code is reached when an "ST2" send has failed.
+
       this.props.navigation.navigate('TwoFAToken', {
         serviceType: this.serviceType,
         recipientAddress: '',
         onTransactionSuccess: this.onTransactionSuccess,
       });
+
+      // presentBottomSheet(
+      //   // <OTPAuthenticationSheet
+      // )
     }
   };
 
@@ -681,7 +687,7 @@ class SendConfirmation extends Component<
               // 🔑 This seems to be the way the backend is distinguishing between
               // accounts and contacts.
               if (selectedContactData.account_name != null) {
-                recipient = makeSubAccountRecipientDescription(
+                recipient = makeAccountRecipientDescriptionFromUnknownData(
                   selectedContactData,
                   accountKind,
                 );
