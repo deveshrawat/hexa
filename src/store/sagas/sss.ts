@@ -74,7 +74,7 @@ import {
   updateEphemeralChannel,
   trustedContactApproved,
   updateTrustedChannel,
-  updateTrustedContactInfoLocally,
+  updateTrustedContactsInfoLocally,
 } from '../actions/trustedContacts';
 import TrustedContactsService from '../../bitcoin/services/TrustedContactsService';
 import RegularAccount from '../../bitcoin/services/accounts/RegularAccount';
@@ -1849,7 +1849,7 @@ function* fetchWalletImageWorker({ payload }) {
 
         if (key === 'TrustedContactsInfo' && ASYNC_DATA[key]) {
           const trustedContactsInfo = JSON.parse(ASYNC_DATA[key]);
-          yield put(updateTrustedContactInfoLocally(trustedContactsInfo));
+          yield put(updateTrustedContactsInfoLocally(trustedContactsInfo));
         }
       }
     }
