@@ -1,6 +1,6 @@
 import { call, put, select } from 'redux-saga/effects';
 import RegularAccount from '../../bitcoin/services/accounts/RegularAccount';
-import { REGULAR_ACCOUNT } from '../../common/constants/serviceTypes';
+import { REGULAR_ACCOUNT } from '../../common/constants/wallet-service-types';
 import { createWatcher } from '../utils/utilities';
 import {
   UPDATE_FCM_TOKENS,

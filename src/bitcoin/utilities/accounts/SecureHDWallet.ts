@@ -23,7 +23,7 @@ import {
   TRUSTED_CONTACTS,
   DONATION_ACCOUNT,
   SUB_PRIMARY_ACCOUNT,
-} from '../../../common/constants/serviceTypes';
+} from '../../../common/constants/wallet-service-types';
 import { SIGNING_AXIOS, BH_AXIOS } from '../../../services/api';
 
 const { SIGNING_SERVER, HEXA_ID, REQUEST_TIMEOUT } = config;

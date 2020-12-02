@@ -42,7 +42,7 @@ import DeviceInfo from 'react-native-device-info';
 import ErrorModalContents from '../../components/ErrorModalContents';
 import KnowMoreButton from '../../components/KnowMoreButton';
 import SecureAccount from '../../bitcoin/services/accounts/SecureAccount';
-import { SECURE_ACCOUNT } from '../../common/constants/serviceTypes';
+import { SECURE_ACCOUNT } from '../../common/constants/wallet-service-types';
 import QRModal from '../Accounts/QRModal';
 import S3Service from '../../bitcoin/services/sss/S3Service';
 import SmallHeaderModal from '../../components/SmallHeaderModal';
@@ -129,7 +129,7 @@ const PersonalCopyHistory = (props) => {
       ? (storagePermissionBottomSheet as any).current.snapTo(0)
       : (storagePermissionBottomSheet as any).current.snapTo(1);
     }
-    
+
   }, [hasStoragePermission]);
 
   useEffect(() => {
@@ -362,7 +362,7 @@ const PersonalCopyHistory = (props) => {
         setHasStoragePermission(true);
       }
     }
-    
+
     if (Platform.OS === 'ios') {
       setHasStoragePermission(true)
       return;
@@ -406,7 +406,7 @@ const PersonalCopyHistory = (props) => {
         return false
       }
     }
-    
+
   }
 
   const renderErrorModalContent = useCallback(() => {

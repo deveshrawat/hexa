@@ -8,7 +8,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { AppBottomSheetTouchableWrapper } from '../../components/AppBottomSheetTouchableWrapper';
-import { REGULAR_ACCOUNT, SECURE_ACCOUNT } from '../../common/constants/serviceTypes';
+import { REGULAR_ACCOUNT, SECURE_ACCOUNT } from '../../common/constants/wallet-service-types';
 import RadioButton from '../../components/RadioButton';
 
 export default function AccountSelectionModalContents(props) {

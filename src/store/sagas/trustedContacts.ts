@@ -39,7 +39,7 @@ import {
   REGULAR_ACCOUNT,
   TRUSTED_CONTACTS,
   TEST_ACCOUNT,
-} from '../../common/constants/serviceTypes';
+} from '../../common/constants/wallet-service-types';
 import { insertDBWorker } from './storage';
 import { AsyncStorage } from 'react-native';
 import { fetchNotificationsWorker } from './notifications';

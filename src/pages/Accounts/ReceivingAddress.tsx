@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   SECURE_ACCOUNT,
   TEST_ACCOUNT,
-} from '../../common/constants/serviceTypes';
+} from '../../common/constants/wallet-service-types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Colors from '../../common/Colors';

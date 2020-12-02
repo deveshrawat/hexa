@@ -37,7 +37,7 @@ import {
 import BottomSheet from 'reanimated-bottom-sheet';
 import LoaderModal from '../../components/LoaderModal';
 import { getTestcoins, accountsSynched } from '../../store/actions/accounts';
-import { TEST_ACCOUNT } from '../../common/constants/serviceTypes';
+import { TEST_ACCOUNT } from '../../common/constants/wallet-service-types';
 
 import DeviceInfo from 'react-native-device-info';
 

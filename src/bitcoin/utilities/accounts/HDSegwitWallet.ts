@@ -29,7 +29,7 @@ import {
   REGULAR_ACCOUNT,
   DONATION_ACCOUNT,
   SUB_PRIMARY_ACCOUNT,
-} from '../../../common/constants/serviceTypes';
+} from '../../../common/constants/wallet-service-types';
 import { BH_AXIOS } from '../../../services/api';
 import { SATOSHIS_IN_BTC } from '../../../common/constants/Bitcoin';
 import { DerivativeAccountTypes } from '../Interface';

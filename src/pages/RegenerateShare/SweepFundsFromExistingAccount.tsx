@@ -15,7 +15,7 @@ import {
 } from "react-native-responsive-screen";
 import BottomInfoBox from "../../components/BottomInfoBox";
 import { useDispatch, useSelector } from "react-redux";
-import { SECURE_ACCOUNT, TEST_ACCOUNT, REGULAR_ACCOUNT, } from "../../common/constants/serviceTypes";
+import { SECURE_ACCOUNT, TEST_ACCOUNT, REGULAR_ACCOUNT, } from "../../common/constants/wallet-service-types";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Colors from "../../common/Colors";
 import { RFValue } from "react-native-responsive-fontsize";

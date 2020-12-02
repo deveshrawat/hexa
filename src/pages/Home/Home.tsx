@@ -26,7 +26,7 @@ import {
   SECURE_ACCOUNT,
   TRUSTED_CONTACTS,
   FAST_BITCOINS,
-} from '../../common/constants/serviceTypes';
+} from '../../common/constants/wallet-service-types';
 import { connect } from 'react-redux';
 import { downloadMShare, uploadRequestedShare } from '../../store/actions/sss';
 import { createRandomString } from '../../common/CommonFunctions/timeFormatter';

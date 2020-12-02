@@ -6,7 +6,7 @@ import Colors from '../../common/Colors';
 import Fonts from '../../common/Fonts';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { TransactionDetails } from '../../bitcoin/utilities/Interface';
-import { FAST_BITCOINS, SUB_PRIMARY_ACCOUNT } from '../../common/constants/serviceTypes';
+import { FAST_BITCOINS, SUB_PRIMARY_ACCOUNT } from '../../common/constants/wallet-service-types';
 import { UsNumberFormat } from '../../common/utilities';
 
 export type Props = {
