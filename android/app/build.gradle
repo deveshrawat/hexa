@@ -1,8 +1,9 @@
 
 apply plugin: "com.android.application"
 
+
 import com.android.build.OutputFile
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"     
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 
 project.ext.react = [
@@ -13,6 +14,7 @@ apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 /**
  * Set this to true to create two separate APKs instead of one:
