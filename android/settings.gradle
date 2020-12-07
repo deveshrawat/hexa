@@ -1,5 +1,6 @@
-apply from: '../node_modules/react-native-unimodules/gradle.groovy'
+rootProject.name = 'HEXA'
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+apply from: '../node_modules/react-native-unimodules/gradle.groovy'
 include ':react-native-fs'
 project(':react-native-fs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fs/android')
 include ':react-native-check-app-install'
@@ -10,12 +11,6 @@ include ':react-native-config'
 project(':react-native-config').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-config/android')
 include ':jail-monkey'
 project(':jail-monkey').projectDir = new File(rootProject.projectDir, '../node_modules/jail-monkey/android')
-include ':react-native-firebase'
-project(':react-native-firebase').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-firebase/android')
-include ':react-native-contacts'
-project(':react-native-contacts').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-contacts/android')
-
-
 include ':react-native-mail'
 project(':react-native-mail').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mail/android')
 include ':react-native-print'
@@ -49,11 +44,7 @@ project(':react-native-screens').projectDir = new File(rootProject.projectDir, '
 include ':react-native-reanimated'
 project(':react-native-reanimated').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-reanimated/android')
 includeUnimodulesProjects()
-
 include ':react-native-gesture-handler'
 project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-gesture-handler/android')
-
-rootProject.name = 'HEXA'
-apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 
 include ':app'
