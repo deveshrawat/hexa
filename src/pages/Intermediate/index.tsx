@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { ImageBackground, View, StyleSheet, AppState, Platform } from 'react-native'
 import { withNavigationFocus } from 'react-navigation'
 import Loader from '../../components/loader'
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { updateLastSeen } from '../../store/actions/preferences'
 var imageBackground = require('../../assets/images/intermediate-bg.png')
 

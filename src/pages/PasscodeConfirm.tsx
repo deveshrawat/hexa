@@ -16,7 +16,7 @@ import {
 } from "react-native-responsive-screen";
 import { RFValue } from "react-native-responsive-fontsize";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';;
 import { storeCreds } from "../store/actions/setupAndAuth";
 
 export default function PasscodeConfirm( props ) {

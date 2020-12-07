@@ -6,7 +6,7 @@ const URL = Config.FBTC_URL;
 export const accountSync = (data) =>
   axios({
     method: 'get',
-    url: URL + 'account-sync/' + Config.WALLET_SLUG + '/' + data.userKey, // wallet_slug/user_key',
+    url: URL + 'account-sync/' + Config.WALLET_SLUG + '/' + data.userKey, // wallet_slug/userKey',
   });
 
 export const getQuote = (data) =>

@@ -1,15 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, Linking } from 'react-native';
-import Colors from '../../common/Colors';
-import Fonts from '../../common/Fonts';
+import Colors from '../../../common/Colors';
+import Fonts from '../../../common/Fonts';
 import { RFValue } from 'react-native-responsive-fontsize';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import CopyThisText from '../../components/CopyThisText';
+import CopyThisText from '../../CopyThisText';
 
-export default function AccountVerification(props) {
+export default function FastBitcoinsRegistrationBottomSheet(props) {
   return (
     <View style={{ ...styles.modalContentContainer, height: '100%' }}>
       <View style={{ height: '100%' }}>

@@ -50,11 +50,10 @@ import NewTwoFASecret from '../pages/Accounts/NewTwoFASecret';
 import TwoFASweepFunds from '../pages/Accounts/TwoFASweepFunds';
 import UpdateApp from '../pages/UpdateApp';
 import SendRequest from '../pages/Contacts/SendRequest';
-import VoucherScanner from '../pages/FastBitcoin/VoucherScanner';
 import AddContactSendRequest from '../pages/Contacts/AddContactSendRequest';
 import ContactDetails from '../pages/Contacts/ContactDetails';
 import Receive from '../pages/Accounts/Receive';
-import PairNewWallet from '../pages/FastBitcoin/PairNewWallet';
+import PairNewWallet from '../pages/FastBitcoinsVoucherScan/PairNewWallet';
 import Intermediate from '../pages/Intermediate';
 import NewOwnQuestions from '../pages/NewOwnQuestions';
 import NewRecoveryOwnQuestions from '../pages/Recovery/NewRecoveryOwnQuestions';
@@ -155,7 +154,6 @@ const HomeNavigator = createStackNavigator(
     NewTwoFASecret,
     TwoFASweepFunds,
     SendRequest,
-    VoucherScanner,
     AddContactSendRequest,
     ContactDetails,
     Receive,

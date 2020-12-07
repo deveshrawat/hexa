@@ -44,7 +44,7 @@ import {
 import { isEmpty } from '../../common/CommonFunctions/index';
 
 const PairNewWallet = (props) => {
-  const FBTCAccountData = useSelector((state) => state.fbtc.FBTCAccountData);
+  const fbtcAccountData = useSelector((state) => state.fbtc.fbtcAccountData);
   const [FBTCAccount_Data, setFBTCAccount_Data] = useState({});
   const userKey1 = props.navigation.state.params
     ? props.navigation.state.params.userKey
@@ -78,23 +78,23 @@ const PairNewWallet = (props) => {
   const [] = useState({});
 
   useEffect(() => {
-    if (FBTCAccountData) {
-      //console.log("FBTCAccountData------- in useEffect", FBTCAccountData)
-      setFBTCAccount_Data(FBTCAccountData);
+    if (fbtcAccountData) {
+      //console.log("fbtcAccountData------- in useEffect", fbtcAccountData)
+      setFBTCAccount_Data(fbtcAccountData);
     }
-  }, [FBTCAccountData]);
+  }, [fbtcAccountData]);
 
   useEffect(() => {
     (async () => {
-      let FBTCAccountData = FBTCAccount_Data;
+      let fbtcAccountData = FBTCAccount_Data;
       // JSON.parse(
       //   await AsyncStorage.getItem('FBTCAccount'),
       // );
-      if (FBTCAccountData && FBTCAccountData.user_key) {
+      if (fbtcAccountData && fbtcAccountData.userKey) {
         setIsUserRegistered(true);
       }
-      if (!userKey && FBTCAccountData) {
-        setUserKey(FBTCAccountData.user_key);
+      if (!userKey && fbtcAccountData) {
+        setUserKey(fbtcAccountData.userKey);
       }
       if (userKey1 && !isUserRegistered) {
         setUserKey(userKey1);
@@ -135,15 +135,15 @@ const PairNewWallet = (props) => {
   }, [userKey]);
 
   const createFBTCAccount = async () => {
-    let FBTCAccountData = FBTCAccount_Data;
-    //console.log('FBTCAccountData', FBTCAccountData);
+    let fbtcAccountData = FBTCAccount_Data;
+    //console.log('fbtcAccountData', fbtcAccountData);
 
     //JSON.parse(await AsyncStorage.getItem('FBTCAccount'));
     let obj;
-    if (isEmpty(FBTCAccountData)) {
+    if (isEmpty(fbtcAccountData)) {
       obj = {
-        user_key: userKey,
-        registrationDate: moment(new Date()).valueOf(),
+        userKey: userKey,
+        registrationTimestamp: moment(new Date()).valueOf(),
         test_account: {
           voucher: [],
         },
@@ -155,16 +155,16 @@ const PairNewWallet = (props) => {
         },
       };
     } else {
-      //console.log('FBTCAccountData in else', FBTCAccountData);
-      obj = FBTCAccountData;
+      //console.log('fbtcAccountData in else', fbtcAccountData);
+      obj = fbtcAccountData;
     }
     //console.log('obj', obj);
     dispatch(storeFbtcData(obj));
     await AsyncStorage.setItem('FBTCAccount', JSON.stringify(obj));
     if (
-      !obj.hasOwnProperty('redeem_vouchers') &&
-      !obj.hasOwnProperty('exchange_balances') &&
-      !obj.hasOwnProperty('sell_bitcoins')
+      !obj.hasOwnProperty('redeemVouchers') &&
+      !obj.hasOwnProperty('exchangeBalances') &&
+      !obj.hasOwnProperty('sellBitcoins')
     )
       checkAuth();
   };
@@ -181,22 +181,22 @@ const PairNewWallet = (props) => {
     if (accountSyncDetails) {
       //console.log("FBTCAccount_Data accountSync", FBTCAccount_Data);
       (async () => {
-        let FBTCAccountData = FBTCAccount_Data;
+        let fbtcAccountData = FBTCAccount_Data;
         // JSON.parse(
         //   await AsyncStorage.getItem('FBTCAccount'),
         // );
         let obj;
-        if (FBTCAccountData) {
+        if (fbtcAccountData) {
           obj = {
-            ...FBTCAccountData,
-            redeem_vouchers: accountSyncDetails.redeem_vouchers,
-            exchange_balances: accountSyncDetails.exchange_balances,
-            sell_bitcoins: accountSyncDetails.sell_bitcoins,
+            ...fbtcAccountData,
+            redeemVouchers: accountSyncDetails.redeemVouchers,
+            exchangeBalances: accountSyncDetails.exchangeBalances,
+            sellBitcoins: accountSyncDetails.sellBitcoins,
           };
           dispatch(storeFbtcData(obj));
           await AsyncStorage.setItem('FBTCAccount', JSON.stringify(obj));
         }
-        if (accountSyncDetails.redeem_vouchers) {
+        if (accountSyncDetails.redeemVouchers) {
           setTimeout(() => {
             (RegistrationSuccessBottomSheet as any).current.snapTo(1);
           }, 2);
@@ -218,13 +218,13 @@ const PairNewWallet = (props) => {
         }
         proceedButtonText={'Redeem Voucher'}
         onPressProceed={async () => {
-          let FBTCAccountData = FBTCAccount_Data;
+          let fbtcAccountData = FBTCAccount_Data;
           // JSON.parse(
           //   await AsyncStorage.getItem('FBTCAccount'),
           // );
-          if (FBTCAccountData && FBTCAccountData.redeem_vouchers) {
+          if (fbtcAccountData && fbtcAccountData.redeemVouchers) {
             (RegistrationSuccessBottomSheet as any).current.snapTo(0);
-            props.navigation.replace("VoucherScanner");
+            props.navigation.replace("FastBitcoinsVoucherScan");
           }
         }}
         isIgnoreButton={true}

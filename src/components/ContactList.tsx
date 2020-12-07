@@ -428,7 +428,7 @@ export default function ContactList(props) {
             })
           : null}
       </View>
-      
+
       <View style={[styles.searchBoxContainer]}>
         <View style={styles.searchBoxIcon}>
           <EvilIcons

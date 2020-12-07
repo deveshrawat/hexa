@@ -14,7 +14,7 @@ import {
     heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import BottomInfoBox from "../../components/BottomInfoBox";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';;
 import { SECURE_ACCOUNT, TEST_ACCOUNT, REGULAR_ACCOUNT, } from "../../common/constants/serviceTypes";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Colors from "../../common/Colors";

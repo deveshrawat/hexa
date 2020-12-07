@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';;
 import { newAccountShellCreationCompleted } from "../../../store/actions/accounts";
 import useAccountsState from "../state-selectors/accounts/UseAccountsState";
 

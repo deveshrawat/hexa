@@ -26,9 +26,8 @@ import Loader from '../../components/loader';
 import SmallNavHeaderBackButton from '../../components/navigation/SmallNavHeaderBackButton';
 
 export default function FundingSourcesContainerScreen(props) {
-  const FBTCAccountData = useSelector((state) => state.fbtc.FBTCAccountData);
+  const fbtcAccountData = useSelector((state) => state.fbtc.fbtcAccountData);
   const [FBTCAccount, setFBTCAccount] = useState([]);
-  const [FBTCAccountInfo, setFBTCAccountInfo] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,14 +39,11 @@ export default function FundingSourcesContainerScreen(props) {
   useEffect(() => {
     (async () => {
       let FBTCAccount = [];
-      let accounts = FBTCAccountData;
 
-      setFBTCAccountInfo(accounts);
-
-      if (accounts) {
-        if (accounts.checking_account.voucher.length) {
-          for (let i = 0; i < accounts.checking_account.voucher.length; i++) {
-            const element = accounts.checking_account.voucher[i];
+      if (fbtcAccountData) {
+        if (fbtcAccountData.checking_account.voucher.length) {
+          for (let i = 0; i < fbtcAccountData.checking_account.voucher.length; i++) {
+            const element = fbtcAccountData.checking_account.voucher[i];
             let obj = {
               ...element,
               accountType: REGULAR_ACCOUNT,
@@ -55,9 +51,9 @@ export default function FundingSourcesContainerScreen(props) {
             FBTCAccount.push(obj);
           }
         }
-        if (accounts.saving_account.voucher.length) {
-          for (let i = 0; i < accounts.saving_account.voucher.length; i++) {
-            const element = accounts.saving_account.voucher[i];
+        if (fbtcAccountData.saving_account.voucher.length) {
+          for (let i = 0; i < fbtcAccountData.saving_account.voucher.length; i++) {
+            const element = fbtcAccountData.saving_account.voucher[i];
             let obj = {
               ...element,
               accountType: SECURE_ACCOUNT,
@@ -74,7 +70,7 @@ export default function FundingSourcesContainerScreen(props) {
         setFBTCAccount(FBTCAccount);
       }
     })();
-  }, []);
+  }, [fbtcAccountData]);
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.backgroundColor1 }}>
@@ -100,7 +96,7 @@ export default function FundingSourcesContainerScreen(props) {
         </View>
       </View>
 
-      {FBTCAccountInfo ? (
+      {fbtcAccountData ? (
         <ScrollView style={{ flex: 1 }}>
           <View
             style={{
@@ -133,13 +129,13 @@ export default function FundingSourcesContainerScreen(props) {
               </Text>
               <Text
                 style={{
-                  color: FBTCAccountInfo.user_key ? Colors.darkGreen : Colors.red,
+                  color: fbtcAccountData.userKey ? Colors.darkGreen : Colors.red,
                   fontFamily: Fonts.FiraSansRegular,
                   fontSize: RFValue(12),
                   marginLeft: 'auto',
                 }}
               >
-                {FBTCAccountInfo.user_key ? 'Active' : 'Inactive'}
+                {fbtcAccountData.userKey ? 'Active' : 'Inactive'}
               </Text>
             </View>
             <View
@@ -175,7 +171,7 @@ export default function FundingSourcesContainerScreen(props) {
                   marginLeft: 'auto',
                 }}
               >
-                {moment(FBTCAccount.registrationDate)
+                {moment(FBTCAccount.registrationTimestamp)
                   .utc()
                   .format('DD MMMM YYYY')}
               </Text>
@@ -183,7 +179,7 @@ export default function FundingSourcesContainerScreen(props) {
             <View style={styles.permissionView}>
               <Text style={styles.permissionTitle}>REDEEM PERMISSION</Text>
               <View style={styles.permissionSeparationView} />
-              {FBTCAccountInfo.redeem_vouchers ? (
+              {fbtcAccountData.redeemVouchers ? (
                 <Image
                   source={require('../../assets/images/icons/icon_check_green.png')}
                   style={styles.permissionImage}
@@ -201,7 +197,7 @@ export default function FundingSourcesContainerScreen(props) {
             >
               <Text style={styles.permissionTitle}>BALANCE PERMISSION</Text>
               <View style={styles.permissionSeparationView} />
-              {FBTCAccountInfo.exchange_balances ? (
+              {fbtcAccountData.exchangeBalances ? (
                 <Image
                   source={require('../../assets/images/icons/icon_check_green.png')}
                   style={styles.permissionImage}

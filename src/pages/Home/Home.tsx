@@ -15,7 +15,7 @@ import { Easing } from 'react-native-reanimated';
 import { heightPercentageToDP } from 'react-native-responsive-screen';
 import DeviceInfo from 'react-native-device-info';
 import CustodianRequestRejectedModalContents from '../../components/CustodianRequestRejectedModalContents';
-import AddModalContents from '../../components/AddModalContents';
+import NewAccountAddBottomSheetContent from '../../components/home/NewAccountAddBottomSheetContent';
 import * as RNLocalize from 'react-native-localize';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import Colors from '../../common/Colors';
@@ -42,7 +42,6 @@ import {
   fetchNotifications,
   notificationsUpdated,
 } from '../../store/actions/notifications';
-import { storeFbtcData } from '../../store/actions/fbtc';
 import { setCurrencyCode } from '../../store/actions/preferences';
 import { getCurrencyImageByRegion } from '../../common/CommonFunctions/index';
 import ErrorModalContents from '../../components/ErrorModalContents';
@@ -91,6 +90,7 @@ const releaseNotificationTopic = getReleaseTopic()
 import { AccountsState } from '../../store/reducers/accounts';
 import HomeAccountCardsList from './HomeAccountCardsList';
 import AccountShell from '../../common/data/models/AccountShell';
+import homeAddMenuItems, { HomeAddMenuItem, HomeAddMenuKind } from './AddMenuItems';
 
 export const BOTTOM_SHEET_OPENING_ON_LAUNCH_DELAY: Milliseconds = 800;
 
@@ -127,7 +127,6 @@ interface HomeStateTypes {
   selectedContact: any[];
   notificationDataChange: boolean;
   appState: string;
-  fbBTCAccount: any;
   trustedContactRequest: any;
   recoveryRequest: any;
   custodyRequest: any;
@@ -160,8 +159,6 @@ interface HomePropsTypes {
   isFocused: boolean;
   notificationListNew: any;
   notificationsUpdated: any;
-  FBTCAccountData: any;
-  storeFbtcData: any;
   setCurrencyCode: any;
   currencyCode: any;
   updatePreference: any;
@@ -204,7 +201,6 @@ class Home extends PureComponent<HomePropsTypes, HomeStateTypes> {
       selectedContact: [],
       notificationDataChange: false,
       appState: '',
-      fbBTCAccount: {},
       trustedContactRequest: null,
       recoveryRequest: null,
       custodyRequest: null,
@@ -952,7 +948,6 @@ class Home extends PureComponent<HomePropsTypes, HomeStateTypes> {
 
     this.focusListener = navigation.addListener('didFocus', () => {
       this.setCurrencyCodeFromAsync();
-      this.checkFastBitcoin();
       this.props.fetchNotifications();
       this.setState({
         lastActiveTime: moment().toISOString(),
@@ -960,16 +955,8 @@ class Home extends PureComponent<HomePropsTypes, HomeStateTypes> {
     });
 
     this.setCurrencyCodeFromAsync();
-    this.checkFastBitcoin();
   };
 
-  checkFastBitcoin = async () => {
-    const { FBTCAccountData } = this.props;
-
-    let getFBTCAccount = FBTCAccountData || {};
-
-    this.setState({ fbBTCAccount: getFBTCAccount });
-  };
 
   setSecondaryDeviceAddresses = async () => {
     let secondaryDeviceOtpTemp = this.props.secondaryDeviceAddressValue;
@@ -1500,6 +1487,24 @@ class Home extends PureComponent<HomePropsTypes, HomeStateTypes> {
     }
   };
 
+
+  handleAddMenuItemSelection = ({ kind: itemKind }: HomeAddMenuItem) => {
+    switch (itemKind) {
+      case HomeAddMenuKind.BUY_BITCOIN_FROM_FAST_BITCOINS:
+        this.props.navigation.navigate('FastBitcoinsVoucherScan');
+        this.closeBottomSheet();
+        break;
+      case HomeAddMenuKind.ADD_CONTACT:
+        this.setState(
+          { isLoadContacts: true },
+          () => {
+            this.openBottomSheet(BottomSheetKind.ADD_CONTACT_FROM_ADDRESS_BOOK);
+          }
+        );
+        break;
+    }
+  };
+
   handleAccountCardSelection = (selectedAccount: AccountShell) => {
     this.props.navigation.navigate('AccountDetails', {
       accountShellID: selectedAccount.id,
@@ -1756,23 +1761,9 @@ class Home extends PureComponent<HomePropsTypes, HomeStateTypes> {
           <>
             <BottomSheetHeader title="Add" onPress={this.closeBottomSheet} />
 
-            <AddModalContents
-              onPressElements={(type) => {
-                if (type == 'buyBitcoins') {
-                  navigation.navigate('VoucherScanner');
-                } else if (type == 'addContact') {
-                  this.setState(
-                    {
-                      isLoadContacts: true,
-                    },
-                    () => {
-                      this.openBottomSheet(
-                        BottomSheetKind.ADD_CONTACT_FROM_ADDRESS_BOOK,
-                      );
-                    },
-                  );
-                }
-              }}
+            <NewAccountAddBottomSheetContent
+              menuItems={homeAddMenuItems}
+              onItemSelected={this.handleAddMenuItemSelection}
             />
           </>
         );
@@ -2039,7 +2030,6 @@ const mapStateToProps = (state) => {
     trustedContacts: idx(state, (_) => _.trustedContacts.service),
     paymentDetails: idx(state, (_) => _.trustedContacts.paymentDetails),
     notificationListNew: idx(state, (_) => _.notifications.notificationListNew),
-    FBTCAccountData: idx(state, (_) => _.fbtc.FBTCAccountData),
     currencyCode: idx(state, (_) => _.preferences.currencyCode),
     fcmTokenValue: idx(state, (_) => _.preferences.fcmTokenValue),
     secondaryDeviceAddressValue: idx(
@@ -2064,7 +2054,6 @@ export default withNavigationFocus(
     addTransferDetails,
     clearPaymentDetails,
     notificationsUpdated,
-    storeFbtcData,
     setCurrencyCode,
     updatePreference,
     setFCMToken,

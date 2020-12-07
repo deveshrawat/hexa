@@ -29,6 +29,7 @@ export const AVERAGE_TX_FEE = 'AVERAGE_TX_FEE';
 export const SETUP_DONATION_ACCOUNT = 'SETUP_DONATION_ACCOUNT';
 export const UPDATE_DONATION_PREFERENCES = 'UPDATE_DONATION_PREFERENCES';
 export const ADD_NEW_ACCOUNT_SHELL = 'ADD_NEW_ACCOUNT_SHELL';
+export const ADD_NEW_SUB_ACCOUNT = 'ADD_NEW_SUB_ACCOUNT';
 export const ADD_NEW_ACCOUNT_SHELL_COMPLETED =
   'ADD_NEW_ACCOUNT_SHELL_COMPLETED';
 export const UPDATE_SUB_ACCOUNT_SETTINGS = 'UPDATE_SUB_ACCOUNT_SETTINGS';
@@ -293,6 +294,20 @@ export const accountShellRefreshCompleted = (
 ) => {
   return {
     type: ACCOUNT_SHELL_REFRESH_COMPLETED,
+    payload,
+  };
+};
+
+export interface AddNewSubAccountAction extends Action {
+  type: typeof ADD_NEW_SUB_ACCOUNT;
+  payload: SubAccountDescribing;
+}
+
+export const addNewSubAccount = (
+  payload: SubAccountDescribing,
+): AddNewSubAccountAction => {
+  return {
+    type: ADD_NEW_SUB_ACCOUNT,
     payload,
   };
 };

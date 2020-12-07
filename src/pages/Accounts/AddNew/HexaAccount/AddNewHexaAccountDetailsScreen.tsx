@@ -4,7 +4,7 @@ import FormStyles from '../../../../common/Styles/FormStyles';
 import ButtonStyles from '../../../../common/Styles/ButtonStyles';
 import ListStyles from '../../../../common/Styles/ListStyles';
 import { Input, Button } from 'react-native-elements';
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux';
 import { addNewAccountShell } from '../../../../store/actions/accounts';
 import useAccountShellCreationCompletionEffect from '../../../../utils/hooks/account-effects/UseAccountShellCreationCompletionEffect';
 import { resetToHomeAction } from '../../../../navigation/actions/NavigationActions';

@@ -21,7 +21,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import config from '../bitcoin/HexaConfig';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import checkAppVersionCompatibility from '../utils/CheckAppVersionCompatibility';
 
 interface HomePropsTypes {

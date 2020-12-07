@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';;
 import ButtonStyles from '../../../../common/Styles/ButtonStyles';
 import ListStyles from '../../../../common/Styles/ListStyles';
 import DestinationAccountShellsList from '../../../../components/account-settings/transaction-reassignment/DestinationAccountShellsList';

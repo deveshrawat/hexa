@@ -2,7 +2,7 @@
 import React, { useMemo, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';;
 import ButtonStyles from '../../../common/Styles/ButtonStyles';
 import { resetStackToAccountDetails } from '../../../navigation/actions/NavigationActions';
 import useAccountShellFromNavigation from '../../../utils/hooks/state-selectors/accounts/UseAccountShellFromNavigation';

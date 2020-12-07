@@ -93,6 +93,7 @@ import {
   getQuoteWatcher,
   executeOrderWatcher,
   getBalancesWatcher,
+  createNewFastBitcoinsSubAccountWatcher,
 } from './sagas/fbtc';
 
 import {
@@ -178,11 +179,12 @@ const rootSaga = function* () {
     updateWalletImageWatcher,
     fetchWalletImageWatcher,
 
-    //fBTC
+    // Fast Bitcoins
     accountSyncWatcher,
     getQuoteWatcher,
     executeOrderWatcher,
     getBalancesWatcher,
+    createNewFastBitcoinsSubAccountWatcher,
 
     // Notifications
     updateFCMTokensWatcher,

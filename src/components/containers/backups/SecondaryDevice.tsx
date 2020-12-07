@@ -9,7 +9,7 @@ import {
 } from "react-native-responsive-screen";
 import BottomInfoBox from "../../BottomInfoBox";
 import CopyThisText from "../../CopyThisText";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';;
 import { uploadEncMShare, ErrorSending } from "../../../store/actions/sss";
 import ErrorModalContents from '../../../components/ErrorModalContents';
 import ModalHeader from '../../../components/ModalHeader';

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';;
 import AccountShell from "../../../common/data/models/AccountShell";
 import { accountShellMergeCompleted } from "../../../store/actions/accounts";
 

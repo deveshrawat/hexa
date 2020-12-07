@@ -13,57 +13,56 @@ import {
   GET_QUOTE,
   EXECUTE_ORDER,
   GET_BALANCES,
+  CREATE_NEW_FAST_BITCOINS_SUB_ACCOUNT,
+  CreateNewFastBitcoinsSubAccountAction,
+  fastBitcoinsSubAccountCreationCompleted,
 } from '../actions/fbtc';
 
 import { accountSync, getQuote, executeOrder } from '../../services/fbtc';
 
 import { createWatcher } from '../utils/utilities';
+import { addNewSubAccount, ADD_NEW_ACCOUNT_SHELL_COMPLETED } from '../actions/accounts';
+import ExternalServiceSubAccountInfo from '../../common/data/models/SubAccountInfo/ExternalServiceSubAccountInfo';
+import ServiceAccountKind from '../../common/data/enums/ServiceAccountKind';
 
 export function* accountSyncWorker({ payload }) {
-  console.log("payload",payload.data)
-  try{
-  let result = yield call(accountSync, payload.data);
-//   let result = {
-//     "data":{
-//     "redeem_vouchers": true,
-//       "exchange_balances": true,
-//       "sell_bitcoins": true
-//     }
-// }
-console.log("result", result);
-  if (!result || result.status !== 200) {
-    let data={
+  console.log("payload", payload.data)
+  try {
+    let result = yield call(accountSync, payload.data);
+
+    if (!result || result.status !== 200) {
+      let data = {
+        accountSyncFail: true,
+        accountSyncFailMessage: 'Account sync fail'
+      }
+      yield put(accountSyncFail(data));
+    } else {
+      //   // the return type is not json in this instance and
+      //   // has a trailing comma.
+      //   // probably a bug but for now will use a simple method to parse it
+      //   // this can be removed once this is verified by fast Bitcoins
+      //   console.log("result.data", result.data);
+      if (typeof result.data == 'string') {
+        result.data = string2Json(result.data);
+      }
+      yield put(accountSyncSuccess(result.data));
+      if (result.error) {
+        let data = {
+          accountSyncFail: true,
+          accountSyncFailMessage: result.message ? result.message : 'The wallet account does not exist'
+        }
+        yield put(accountSyncFail(data));
+      }
+    }
+  }
+  catch (err) {
+    console.log("err", err);
+    let data = {
       accountSyncFail: true,
       accountSyncFailMessage: 'Account sync fail'
     }
     yield put(accountSyncFail(data));
-  } else {
-  //   // the return type is not json in this instance and
-  //   // has a trailing comma.
-  //   // probably a bug but for now will use a simple method to parse it
-  //   // this can be removed once this is verified by fast Bitcoins
-  //   console.log("result.data", result.data);
-    if (typeof result.data == 'string') {
-      result.data = string2Json(result.data);
-    }
-    yield put(accountSyncSuccess(result.data));
-    if(result.error){
-      let data={
-        accountSyncFail: true,
-        accountSyncFailMessage: result.message ? result.message : 'The wallet account does not exist'
-      }
-      yield put(accountSyncFail(data));
-    }
   }
-}
-catch(err){
-  console.log("err", err);
-  let data={
-    accountSyncFail: true,
-    accountSyncFailMessage: 'Account sync fail'
-  }
-  yield put(accountSyncFail(data));
-}
 }
 
 export const accountSyncWatcher = createWatcher(
@@ -73,83 +72,83 @@ export const accountSyncWatcher = createWatcher(
 
 function* getQuoteWorker({ payload }) {
   console.log('payload.data', payload.data);
-  try{
-  const result = yield call(getQuote, payload.data);
-  result.status = 200;
-  console.log('result getQuoteWorker', result);
-  if (!result || result.status !== 200) {
-    let data={
+  try {
+    const result = yield call(getQuote, payload.data);
+    result.status = 200;
+    console.log('result getQuoteWorker', result);
+    if (!result || result.status !== 200) {
+      let data = {
+        getQuoteFail: true,
+        getQuoteFailMessage: 'Get Quote fail'
+      }
+      yield put(getQuoteFail(data));
+    } else {
+      //  let result = {
+      //    "data":{
+      //     amount: 100,
+      //     bitcoin_amount: 1234567890,
+      //     commission_amount: 100,
+      //     commission_rate: 2,
+      //     currency: 'USD',
+      //     exchange_rate: 100,
+      //     expiry_time: 1586698948,
+      //     quote_token: 'qwertyu',
+      //     verified_account_required: false,
+      //   }
+      // }
+      if (result.data)
+        yield put(getQuoteSuccess(result.data));
+      if (result.error) {
+        let data = {
+          getQuoteFail: true,
+          getQuoteFailMessage: result.message ? result.message : 'Invalid voucher code'
+        }
+        yield put(getQuoteFail(data));
+      }
+    }
+  }
+  catch (err) {
+    console.log("err", err);
+    let data = {
       getQuoteFail: true,
       getQuoteFailMessage: 'Get Quote fail'
     }
     yield put(getQuoteFail(data));
-  } else {
-  //  let result = {
-  //    "data":{
-  //     amount: 100,
-  //     bitcoin_amount: 1234567890,
-  //     commission_amount: 100,
-  //     commission_rate: 2,
-  //     currency: 'USD',
-  //     exchange_rate: 100,
-  //     expiry_time: 1586698948,
-  //     quote_token: 'qwertyu',
-  //     verified_account_required: false,
-  //   }
-  // }
-  if(result.data)
-    yield put(getQuoteSuccess(result.data));
-  if(result.error){
-      let data={
-        getQuoteFail: true,
-       getQuoteFailMessage: result.message ? result.message : 'Invalid voucher code'
-      }
-      yield put(getQuoteFail(data));
-    }
   }
-}
-catch(err){
-  console.log("err", err);
-  let data={
-    getQuoteFail: true,
-    getQuoteFailMessage: 'Get Quote fail'
-  }
-  yield put(getQuoteFail(data));
-}
 }
 
 export const getQuoteWatcher = createWatcher(getQuoteWorker, GET_QUOTE);
 
 export function* executeOrderWorker({ payload }) {
-  try{
-  const result = yield call(executeOrder, payload.data);
-  if (!result || result.status !== 200) {
-    let data={
-      executeOrderFail: true,
-      executeOrderFailMessage: 'Order execution fail'
-    }
-    yield put(executeOrderFail(data));
-  } else {
-  // let result = {
-  //   'data': {
-  //     "quote_token": "qwertyu",
-  //     "estimated_delivery": 1586698948,
-  //     "login_required": false
-  //   }
-  // }
-     yield put(executeOrderSuccess(result.data));
-     if(result.error){
-      let data={
+  try {
+    const result = yield call(executeOrder, payload.data);
+    if (!result || result.status !== 200) {
+      let data = {
         executeOrderFail: true,
-        executeOrderFailMessage: result.message ? result.message : 'Order execution fail'
+        executeOrderFailMessage: 'Order execution fail'
       }
       yield put(executeOrderFail(data));
+    } else {
+      // let result = {
+      //   'data': {
+      //     "quote_token": "qwertyu",
+      //     "estimated_delivery": 1586698948,
+      //     "login_required": false
+      //   }
+      // }
+      yield put(executeOrderSuccess(result.data));
+      if (result.error) {
+        let data = {
+          executeOrderFail: true,
+          executeOrderFailMessage: result.message ? result.message : 'Order execution fail'
+        }
+        yield put(executeOrderFail(data));
+      }
     }
-   }
   }
-  catch(err){
+  catch (err) {
     console.log("err", err);
-    let data={
+    let data = {
       executeOrderFail: true,
       executeOrderFailMessage: 'Order execution fail'
     }
@@ -197,3 +196,28 @@ const string2Json = (string) => {
   }
   return json;
 };
+
+function* createNewFastBitcoinsSubAccount({
+  payload: accountShell
+}: CreateNewFastBitcoinsSubAccountAction) {
+  const subAccount = new ExternalServiceSubAccountInfo({
+    defaultTitle: 'FastBitcoins.com',
+    defaultDescription: 'Use FastBitcoin Vouchers',
+    serviceAccountKind: ServiceAccountKind.FAST_BITCOINS,
+  });
+
+  const { subAccountId, subAccountInstanceNum } = yield put(addNewSubAccount(subAccount));
+
+  subAccount.id = subAccountId;
+  subAccount.instanceNumber = subAccountInstanceNum;
+  subAccount.accountShellID = accountShell.id;
+
+  accountShell.secondarySubAccounts[subAccount.id] = subAccount;
+
+  yield put(fastBitcoinsSubAccountCreationCompleted(accountShell));
+}
+
+export const createNewFastBitcoinsSubAccountWatcher = createWatcher(
+  createNewFastBitcoinsSubAccount,
+  CREATE_NEW_FAST_BITCOINS_SUB_ACCOUNT,
+);

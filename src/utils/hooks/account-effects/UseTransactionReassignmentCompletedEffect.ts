@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';;
 import { transactionReassignmentCompleted } from "../../../store/actions/accounts";
 
 type Props = {

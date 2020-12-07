@@ -15,7 +15,8 @@ import {
 import SourceAccountKind from '../../enums/SourceAccountKind';
 
 type ConstructorProps = SubAccountDescribingConstructorProps & {
-  defaultDescription?: string;
+  defaultTitle: string;
+  defaultDescription: string;
   serviceAccountKind: ServiceAccountKind;
 };
 export default class ExternalServiceSubAccountInfo

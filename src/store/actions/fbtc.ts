@@ -1,3 +1,7 @@
+import { Action } from "redux";
+import AccountShell from "../../common/data/models/AccountShell";
+import { FBTCAccountData } from "../reducers/fbtc";
+
 export const ACCOUNT_SYNC = 'ACCOUNT_SYNC';
 export const ACCOUNT_SYNC_FAIL = 'ACCOUNT_SYNC_FAIL';
 export const ACCOUNT_SYNC_SUCCESS = 'ACCOUNT_SYNC_SUCCESS';
@@ -20,6 +24,11 @@ export const GET_BALANCES_SUCCESS = 'GET_BALANCES_SUCCESS';
 export const STORE_FBTC_ACC_DATA = 'STORE_FBTC_ACC_DATA';
 export const FBTC_VOUCHER = 'FBTC_VOUCHER';
 export const CLEAR_FBTC_VOUCHER = 'CLEAR_FBTC_VOUCHER';
+
+export const CREATE_NEW_FAST_BITCOINS_SUB_ACCOUNT = 'CREATE_NEW_FAST_BITCOINS_SUB_ACCOUNT';
+
+export const FAST_BITCOINS_SUB_ACCOUNT_CREATION_COMPLETED = 'FAST_BITCOINS_SUB_ACCOUNT_CREATION_COMPLETED';
+
 
 export const accountSync = (data) => {
   return {
@@ -129,12 +138,11 @@ export const getBalancesFail = () => {
   };
 };
 
-export const storeFbtcData = (FBTCAccount) => {
-  //console.log('INSIDE Action FBTC',FBTCAccount)
+export const storeFbtcData = (fbtcAccountData: FBTCAccountData) => {
   return {
     type: STORE_FBTC_ACC_DATA,
     payload: {
-      FBTCAccountData: FBTCAccount
+      fbtcAccountData,
     },
   };
 };
@@ -155,5 +163,38 @@ export const clearFbtcVoucher = () => {
     payload: {
       FBTCVoucher: null
     },
+  };
+};
+
+export interface CreateNewFastBitcoinsSubAccountAction extends Action {
+  type: typeof CREATE_NEW_FAST_BITCOINS_SUB_ACCOUNT;
+
+  /**
+  * The account shell to use as sub-account's "deposit account".
+  */
+  payload: AccountShell;
+}
+
+export const createNewFastBitcoinsSubAccount = (
+  payload: AccountShell,
+): CreateNewFastBitcoinsSubAccountAction => {
+  return { type: CREATE_NEW_FAST_BITCOINS_SUB_ACCOUNT, payload };
+};
+
+
+export interface FastBitcoinsSubAccountCreationCompletionAction extends Action {
+  type: typeof FAST_BITCOINS_SUB_ACCOUNT_CREATION_COMPLETED;
+
+  /**
+   * The "deposit account" shell in which the new FBTC sub-account is
+   * stored as a secondary sub-account.
+   */
+  payload: AccountShell;
+}
+
+export const fastBitcoinsSubAccountCreationCompleted = (accountShell: AccountShell): FastBitcoinsSubAccountCreationCompletionAction => {
+  return {
+    type: FAST_BITCOINS_SUB_ACCOUNT_CREATION_COMPLETED,
+    payload: accountShell,
   };
 };

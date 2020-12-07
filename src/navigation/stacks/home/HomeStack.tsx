@@ -8,6 +8,7 @@ import MoreOptionsStack from '../more-options/MoreOptionsStack';
 import AllTransactionsStack from '../transactions/AllTransactionsStack';
 import defaultStackScreenNavigationOptions from '../../options/DefaultStackScreenNavigationOptions';
 import AddNewAccountStack from '../accounts/AddNewAccountStack';
+import FastBitcoinsVoucherScanStack from './FastBitcoinsVoucherScanStack';
 
 
 const HomeStack = createStackNavigator(
@@ -20,6 +21,12 @@ const HomeStack = createStackNavigator(
     },
     AddNewAccount: {
       screen: AddNewAccountStack,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    FastBitcoinsVoucherScan: {
+      screen: FastBitcoinsVoucherScanStack,
       navigationOptions: {
         header: null,
       },

@@ -129,7 +129,7 @@ const PersonalCopyHistory = (props) => {
       ? (storagePermissionBottomSheet as any).current.snapTo(0)
       : (storagePermissionBottomSheet as any).current.snapTo(1);
     }
-    
+
   }, [hasStoragePermission]);
 
   useEffect(() => {
@@ -362,7 +362,7 @@ const PersonalCopyHistory = (props) => {
         setHasStoragePermission(true);
       }
     }
-    
+
     if (Platform.OS === 'ios') {
       setHasStoragePermission(true)
       return;
@@ -406,7 +406,7 @@ const PersonalCopyHistory = (props) => {
         return false
       }
     }
-    
+
   }
 
   const renderErrorModalContent = useCallback(() => {

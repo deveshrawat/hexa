@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image } from 'react-native';
-import { Avatar, Button, ListItem } from 'react-native-elements';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import { Button, ListItem } from 'react-native-elements';
 import Colors from '../../../common/Colors';
 import Fonts from '../../../common/Fonts';
 import ButtonStyles from '../../../common/Styles/ButtonStyles';

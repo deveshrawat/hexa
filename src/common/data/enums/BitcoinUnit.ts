@@ -12,7 +12,7 @@ export function displayNameForBitcoinUnit(unit: BitcoinUnit): string {
     case BitcoinUnit.BTC:
       return "BTC";
     case BitcoinUnit.TSATS:
-      return "T-Sats";
+      return "t-Sats";
   }
 }
 
